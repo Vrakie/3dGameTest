@@ -1,20 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
-	public static SpawnManager Instance;
-
+    #region VARIABLE
+    public static SpawnManager Instance;
 	public Spawnpoint[] spawnpoints;
-
-	void Awake()
-	{
-		Instance = this;
-	}
-
-	public Transform GetSpawnpoint()
-	{
-		return spawnpoints[Random.Range(0, spawnpoints.Length)].transform;
-	}
+    #endregion
+    void Awake() => Instance = this;
+	public Transform GetSpawnpoint() => spawnpoints[Random.Range(0, spawnpoints.Length)].transform;
 }

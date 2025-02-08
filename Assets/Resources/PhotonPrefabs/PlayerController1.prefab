@@ -542,7 +542,6 @@ GameObject:
   - component: {fileID: 8746765900099080715}
   - component: {fileID: 7853167350231390367}
   - component: {fileID: 1132829679164154593}
-  - component: {fileID: 6168008464387270920}
   - component: {fileID: 1792601794132344386}
   - component: {fileID: 1594737241855504759}
   - component: {fileID: 7408458560230083897}
@@ -668,23 +667,6 @@ MonoBehaviour:
   BottomClamp: -30
   CameraAngleOverride: 0
   LockCameraPosition: 0
---- !u!114 &6168008464387270920
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2367291794344120321}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 909d917d73a63f940ac158d02e936645, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pushLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  canPush: 0
-  strength: 1.1
 --- !u!114 &1792601794132344386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -829,7 +811,6 @@ MonoBehaviour:
   fireAudio: {fileID: 8300000, guid: f7aac64556796cc47b215056f9b7d0c9, type: 3}
   stats: {fileID: 1326526873661400804}
   photonView: {fileID: 1737856058496729695}
-  holdTimerBase: 0.2
   fireballPrefab: {fileID: 6212606256352607395, guid: 380f7c2ad4cd7d84f8f0604b4d20805a, type: 3}
   fireballcontraint: {fileID: 0}
   firePoint: {fileID: 7525556054821716660}
