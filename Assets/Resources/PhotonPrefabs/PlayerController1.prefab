@@ -685,6 +685,7 @@ GameObject:
   - component: {fileID: 1737856058496729695}
   - component: {fileID: 1326526873661400804}
   - component: {fileID: 6657420007571170781}
+  - component: {fileID: 3896497631275374968}
   - component: {fileID: 8490858129116678119}
   m_Layer: 7
   m_Name: PlayerArmature
@@ -803,6 +804,8 @@ MonoBehaviour:
   BottomClamp: -30
   CameraAngleOverride: 0
   LockCameraPosition: 0
+  menuPause: {fileID: 0}
+  cursorLocked: 1
 --- !u!114 &1792601794132344386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -822,7 +825,6 @@ MonoBehaviour:
   aim: 0
   shoot: 0
   analogMovement: 0
-  cursorLocked: 1
   cursorInputForLook: 1
 --- !u!114 &1594737241855504759
 MonoBehaviour:
@@ -1030,6 +1032,18 @@ MonoBehaviour:
     LayerIndex: 0
   - SynchronizeType: 2
     LayerIndex: 1
+--- !u!114 &3896497631275374968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2367291794344120321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5123838aff0d6c4196b92e2d1d4fa16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8490858129116678119
 MonoBehaviour:
   m_ObjectHideFlags: 0

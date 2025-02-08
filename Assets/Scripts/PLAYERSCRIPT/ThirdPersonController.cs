@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 #endif
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
@@ -109,6 +110,11 @@ namespace StarterAssets
         private bool _rotateOnMove = true;
 
         private const float _threshold = 0.01f;
+        public GameObject menuPause;
+        private bool isMenuPauseActif;
+
+        public bool cursorLocked = true;
+
 
         private bool _hasAnimator;
 
@@ -141,8 +147,23 @@ namespace StarterAssets
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
+
+            cursorLocked = true;
+
+            SetCursorState(cursorLocked);
+
+            BpQuit bpQuitScript = Object.FindFirstObjectByType<BpQuit>();
+
+            if (bpQuitScript != null)
+            {
+                menuPause = bpQuitScript.gameObject;
+                menuPause.SetActive(false);
+            }
+
+            isMenuPauseActif = false;
 #if ENABLE_INPUT_SYSTEM 
             _playerInput = GetComponent<PlayerInput>();
+
 #else
 			Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
 #endif
@@ -161,11 +182,38 @@ namespace StarterAssets
             JumpAndGravity();
             GroundedCheck();
             Move();
+            BpPause();
         }
 
         private void LateUpdate()
         {
             CameraRotation();
+        }
+        private void BpPause()
+        {
+            if (UnityEngine.Input.GetKeyDown(KeyCode.C))
+            {
+                isMenuPauseActif = !isMenuPauseActif;
+                menuPause.SetActive(isMenuPauseActif);
+            }
+
+            if (menuPause.activeSelf == true)
+            {
+                LockCameraPosition = true;
+                cursorLocked = false;
+                SetCursorState(cursorLocked);
+            }
+            else if (menuPause.activeSelf == false)
+            {
+                LockCameraPosition = false;
+                cursorLocked = true;
+                SetCursorState(cursorLocked);
+            }
+        }
+
+        private void SetCursorState(bool newState)
+        {
+            Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
         }
 
         private void AssignAnimationIDs()
@@ -265,7 +313,7 @@ namespace StarterAssets
                 // rotate to face input direction relative to camera position
                 if (_rotateOnMove)
                 {
-                transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+                    transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
 
                 }
             }

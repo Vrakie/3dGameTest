@@ -48,7 +48,6 @@ public class PlayerController : MonoBehaviour
             StopCoroutine(layerWeightCoroutine);
         layerWeightCoroutine = StartCoroutine(AnimateLayerWeight(weight));
     }
-
     private IEnumerator AnimateLayerWeight(int targetWeight)
     {
         float currentWeight = animator.GetLayerWeight(1);
@@ -62,7 +61,6 @@ public class PlayerController : MonoBehaviour
         }
         animator.SetLayerWeight(1, targetWeight);
     }
-
     [PunRPC]
     private void FireWeapon(Vector3 direction)
     {
@@ -72,7 +70,6 @@ public class PlayerController : MonoBehaviour
             fireball.GetComponent<Rigidbody>().linearVelocity = direction * 40f;
         }
     }
-
     private void UpdatePlayerRotation(Vector3 direction)
     {
         direction.y = 0f;
