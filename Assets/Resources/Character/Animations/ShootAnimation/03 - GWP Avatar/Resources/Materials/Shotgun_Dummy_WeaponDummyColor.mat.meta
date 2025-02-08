@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: e8e961dafb945924da4b0b7b45088aa6
+timeCreated: 1564650650
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 158282
+  packageName: The 3rd Person Shooter Animation Toolbox
+  packageVersion: 1.0a
+  assetPath: Assets/3rd Person Shooter Toolbox/03 - GWP Avatar/Resources/Materials/Shotgun_Dummy_WeaponDummyColor.mat
+  uploadId: 371886

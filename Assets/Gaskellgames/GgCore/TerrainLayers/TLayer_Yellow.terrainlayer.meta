@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f42abee3c0c27664e88f3ace0291f484
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 8574412962073106934
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 304325
+  packageName: GgCore - Gaskellgames
+  packageVersion: 1.0.0
+  assetPath: Assets/Gaskellgames/GgCore/TerrainLayers/TLayer_Yellow.terrainlayer
+  uploadId: 723134

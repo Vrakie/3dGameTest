@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: bcd8c333ccb1e584fb16741f853cdbae
+timeCreated: 1564760877
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 158282
+  packageName: The 3rd Person Shooter Animation Toolbox
+  packageVersion: 1.0a
+  assetPath: Assets/3rd Person Shooter Toolbox/03 - GWP Avatar/GWP 3rd Person Rig.prefab
+  uploadId: 371886

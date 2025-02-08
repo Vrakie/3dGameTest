@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: aad89bbf4b059194cbb0c78d8e5fc5b0
+timeCreated: 1562488116
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 158282
+  packageName: The 3rd Person Shooter Animation Toolbox
+  packageVersion: 1.0a
+  assetPath: Assets/3rd Person Shooter Toolbox/03 - GWP Avatar/Resources/Materials/GWPAvatar_Tex.mat
+  uploadId: 371886
