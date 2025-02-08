@@ -4,6 +4,7 @@ using Photon.Pun;
 using TMPro;
 using Photon.Realtime;
 using System.Linq;
+using System.Collections;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
@@ -47,6 +48,12 @@ public class Launcher : MonoBehaviourPunCallbacks
         for (int i = 0; i < players.Count(); i++)
             Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
         startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+#if UNITY_EDITOR
+        if (PhotonNetwork.CurrentRoom.Name == "TEST ROOM")
+        {
+            PhotonNetwork.LoadLevel(1);
+        }
+#endif
     }
     public override void OnMasterClientSwitched(Player newMasterClient) => startGameButton.SetActive(PhotonNetwork.IsMasterClient);
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -80,4 +87,32 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
     }
     public override void OnPlayerEnteredRoom(Player newPlayer) => Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
+#if UNITY_EDITOR
+    public void ONTESTROOM()
+    {
+        if (!PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.ConnectUsingSettings();
+            PhotonNetwork.NickName = "TEST GAME";
+            StartCoroutine(WaitForConnectionAndCreateRoom());
+            return;
+        }
+        PhotonNetwork.NickName = "TEST GAME";
+        nomdujoueur.text = PhotonNetwork.NickName;
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LoadLevel(1);
+            return;
+        }
+        PhotonNetwork.CreateRoom("TEST ROOM", new RoomOptions { MaxPlayers = 4 });
+    }
+    private IEnumerator WaitForConnectionAndCreateRoom()
+    {
+        while (!PhotonNetwork.IsConnectedAndReady)
+        {
+            yield return null;
+        }
+        PhotonNetwork.CreateRoom("TEST ROOM", new RoomOptions { MaxPlayers = 4 });
+    }
+#endif
 }
