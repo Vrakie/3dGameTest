@@ -20,14 +20,31 @@ public class BulletProjectile : MonoBehaviour
     }
     private void TryDestroyProjectile()
     {
+        if (photonView == null || gameObject == null || !gameObject.activeInHierarchy) return;
+
         if (photonView.IsMine)
+        {
             PhotonNetwork.Destroy(gameObject);
+        }
         else if (PhotonNetwork.IsMasterClient)
         {
-            if (photonView.Owner != null && photonView.Owner.CustomProperties.Count > 0)
+            if (photonView.Owner != null)
+            {
                 photonView.TransferOwnership(PhotonNetwork.LocalPlayer);
+                StartCoroutine(DestroyAfterOwnershipTransfer());
+            }
             else
+            {
                 PhotonNetwork.Destroy(gameObject);
+            }
+        }
+    }
+    private System.Collections.IEnumerator DestroyAfterOwnershipTransfer()
+    {
+        yield return new WaitForSeconds(0.1f); 
+        if (photonView.IsMine)
+        {
+            PhotonNetwork.Destroy(gameObject);
         }
     }
 }

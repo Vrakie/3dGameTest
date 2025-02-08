@@ -157,7 +157,6 @@ MonoBehaviour:
   layermasks:
     serializedVersion: 2
     m_Bits: 192
-  rb: {fileID: 0}
 --- !u!1773428102 &3939628089303962663
 ParentConstraint:
   m_ObjectHideFlags: 0

@@ -801,18 +801,7 @@ MonoBehaviour:
   aimVirtualCamera: {fileID: 2851429442282576286}
   normalSensitivity: 1.5
   aimSensitivity: 1
-  aimColliderLayerMask:
-    serializedVersion: 2
-    m_Bits: 192
-  aimPlayerLayerMask:
-    serializedVersion: 2
-    m_Bits: 192
-  particle: {fileID: 4602001355051727374}
-  fireAudio: {fileID: 8300000, guid: f7aac64556796cc47b215056f9b7d0c9, type: 3}
-  stats: {fileID: 1326526873661400804}
-  photonView: {fileID: 1737856058496729695}
   fireballPrefab: {fileID: 6212606256352607395, guid: 380f7c2ad4cd7d84f8f0604b4d20805a, type: 3}
-  fireballcontraint: {fileID: 0}
   firePoint: {fileID: 7525556054821716660}
 --- !u!114 &1451690600912355986
 MonoBehaviour:
@@ -867,7 +856,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb35997a841a9a044b14bce3bed6c515, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  life: 100
   photonView: {fileID: 1737856058496729695}
   healthSlider: {fileID: 1893667586806527730}
 --- !u!114 &6657420007571170781
