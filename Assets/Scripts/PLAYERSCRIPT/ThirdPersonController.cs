@@ -152,14 +152,14 @@ namespace StarterAssets
 
             SetCursorState(cursorLocked);
 
-            BpQuit bpQuitScript = Object.FindFirstObjectByType<BpQuit>();
+          /*  BpQuit bpQuitScript = Object.FindFirstObjectByType<BpQuit>();
 
             if (bpQuitScript != null)
             {
                 menuPause = bpQuitScript.gameObject;
                 menuPause.SetActive(false);
             }
-
+          */
             isMenuPauseActif = false;
 #if ENABLE_INPUT_SYSTEM 
             _playerInput = GetComponent<PlayerInput>();
@@ -182,7 +182,7 @@ namespace StarterAssets
             JumpAndGravity();
             GroundedCheck();
             Move();
-            BpPause();
+          //  BpPause();
         }
 
         private void LateUpdate()
