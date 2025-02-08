@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 9084596843583926175}
   - component: {fileID: -6909583938677480139}
   - component: {fileID: 8978647749214791629}
+  - component: {fileID: 6710672128467754395}
   m_Layer: 0
   m_Name: BouleDeFeu
   m_TagString: Untagged
@@ -237,6 +238,23 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &6710672128467754395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6212606256352607395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb609a033bdc67f4e8f935b439403498, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teleportIfFar: 0
+  smoothPos: 0.5
+  smoothRot: 0.5
+  teleportIfFarDistance: 5
+  velocity: {x: 0, y: 0, z: 0}
 --- !u!1001 &7768515585089405893
 PrefabInstance:
   m_ObjectHideFlags: 0
