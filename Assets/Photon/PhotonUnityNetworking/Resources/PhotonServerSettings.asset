@@ -50,6 +50,8 @@ MonoBehaviour:
   - FireWeapon
   - FireWeaponRPC
   - UpdatePlayerName
+  - ReleaseFireball
+  - StartHoldingFireball
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

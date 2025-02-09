@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using StarterAssets;
 using Photon.Pun;
+using UnityEngine.Animations;
 
 public class PlayerController : MonoBehaviour
 {
@@ -16,9 +17,21 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private Coroutine layerWeightCoroutine;
     private bool isAiming;
+    private GameObject currentFireball;
+    private ParentConstraint fireballParentConstraint;
+    private float fireballHoldTime;
+    private const float holdDuration = 1f;
+
     private void Awake() => (starterAssetsInputs, thirdPersonController, animator) = (GetComponent<StarterAssetsInputs>(), GetComponent<ThirdPersonController>(), GetComponent<Animator>());
+
     private void Start() => SetupCameraAndControls(false, true, normalSensitivity, 0);
-    private void Update() { HandleAiming(); HandleWeaponFire(); }
+
+    private void Update()
+    {
+        HandleAiming();
+        HandleWeaponFire();
+    }
+
     private void HandleAiming()
     {
         if (starterAssetsInputs.aim)
@@ -34,11 +47,75 @@ public class PlayerController : MonoBehaviour
             isAiming = false;
         }
     }
+
     private void HandleWeaponFire()
     {
-        if (isAiming && Input.GetMouseButtonDown(0))        
-            FireWeapon(Camera.main.ScreenPointToRay(Input.mousePosition).direction);        
+        if (isAiming && Input.GetMouseButtonDown(0))
+            StartHoldingFireball();
+
+        if (isAiming && Input.GetMouseButton(0))
+        {
+            fireballHoldTime += Time.deltaTime;
+        }
+
+        if (isAiming && Input.GetMouseButtonUp(0))
+        {
+            if (fireballHoldTime >= holdDuration)
+                ReleaseFireball();
+            else
+                DestroyFireball();  // Destroy fireball if not held for 1 second
+
+            fireballHoldTime = 0f;
+        }
     }
+
+    [PunRPC]
+    private void StartHoldingFireball()
+    {
+        if (fireballPrefab && firePoint)
+        {
+            currentFireball = PhotonNetwork.Instantiate("PhotonPrefabs/BouleDeFeu", firePoint.position, Quaternion.identity);
+            fireballParentConstraint = currentFireball.GetComponent<ParentConstraint>();
+
+            if (fireballParentConstraint != null)
+            {
+                ConstraintSource source = new ConstraintSource
+                {
+                    sourceTransform = firePoint,
+                    weight = 1f
+                };
+                fireballParentConstraint.AddSource(source);
+                fireballParentConstraint.constraintActive = true;
+            }
+
+            currentFireball.GetComponent<Rigidbody>().isKinematic = true;
+        }
+    }
+
+    [PunRPC]
+    private void ReleaseFireball()
+    {
+        if (currentFireball && fireballParentConstraint != null)
+        {
+            fireballParentConstraint.constraintActive = false;
+            currentFireball.GetComponent<Rigidbody>().isKinematic = false;
+
+            Vector3 direction = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
+            currentFireball.GetComponent<Rigidbody>().linearVelocity = direction * 40f;
+
+            currentFireball = null;
+        }
+    }
+
+    private void DestroyFireball()
+    {
+        if (currentFireball != null)
+        {
+            PhotonNetwork.Destroy(currentFireball);  // Destroys the fireball if not held for 1 second
+            currentFireball = null;
+        }
+    }
+
     private void SetupCameraAndControls(bool Aim, bool isRotating, float sensitivity, int weight)
     {
         aimVirtualCamera.gameObject.SetActive(Aim);
@@ -48,6 +125,7 @@ public class PlayerController : MonoBehaviour
             StopCoroutine(layerWeightCoroutine);
         layerWeightCoroutine = StartCoroutine(AnimateLayerWeight(weight));
     }
+
     private IEnumerator AnimateLayerWeight(int targetWeight)
     {
         float currentWeight = animator.GetLayerWeight(1);
@@ -61,15 +139,7 @@ public class PlayerController : MonoBehaviour
         }
         animator.SetLayerWeight(1, targetWeight);
     }
-    [PunRPC]
-    private void FireWeapon(Vector3 direction)
-    {
-        if (fireballPrefab && firePoint)
-        {
-            var fireball = PhotonNetwork.Instantiate("PhotonPrefabs/BouleDeFeu", firePoint.position, Quaternion.identity);
-            fireball.GetComponent<Rigidbody>().linearVelocity = direction * 40f;
-        }
-    }
+
     private void UpdatePlayerRotation(Vector3 direction)
     {
         direction.y = 0f;
