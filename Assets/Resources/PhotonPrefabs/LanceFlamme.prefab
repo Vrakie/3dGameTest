@@ -11,8 +11,10 @@ GameObject:
   - component: {fileID: 4584431484625042}
   - component: {fileID: 198637950067575458}
   - component: {fileID: 199982541912562440}
+  - component: {fileID: -7657864563232576239}
+  - component: {fileID: 1799834164499881225}
   m_Layer: 0
-  m_Name: FlameThrower
+  m_Name: LanceFlamme
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,15 +28,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1634767862067424}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.99294496, y: -0.031396043, z: -0.079980135, w: -0.08171845}
-  m_LocalPosition: {x: -7.45, y: 2.75, z: -55.32}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4452672904288642}
   - {fileID: 4691803356102260}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -189.048, y: -9.557007, z: -4.380005}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &198637950067575458
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -4856,6 +4858,45 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &-7657864563232576239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634767862067424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 0
+  ObservedComponents:
+  - {fileID: 1799834164499881225}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &1799834164499881225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634767862067424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &1685911702664702
 GameObject:
   m_ObjectHideFlags: 0

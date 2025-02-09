@@ -123,10 +123,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6212606256352607395}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_Drag: 0
+  m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -158,6 +158,7 @@ MonoBehaviour:
   layermasks:
     serializedVersion: 2
     m_Bits: 192
+  parentConstraint: {fileID: 3939628089303962663}
 --- !u!1773428102 &3939628089303962663
 ParentConstraint:
   m_ObjectHideFlags: 0
@@ -204,6 +205,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 0
   ObservedComponents:
+  - {fileID: 2002543675502128667}
   - {fileID: -6909583938677480139}
   - {fileID: 8978647749214791629}
   - {fileID: 6710672128467754395}
