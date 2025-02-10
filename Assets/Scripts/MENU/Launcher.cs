@@ -4,6 +4,7 @@ using Photon.Pun;
 using TMPro;
 using Photon.Realtime;
 using System.Linq;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class Launcher : MonoBehaviourPunCallbacks
@@ -11,9 +12,10 @@ public class Launcher : MonoBehaviourPunCallbacks
     #region VARIABLE
     public static Launcher Instance;
     [SerializeField] TMP_InputField roomNameInputField, playerNameInputField;
-    [SerializeField] TMP_Text errorText, roomNameText, nomdujoueur;
+    [SerializeField] TMP_Text errorText, roomNameText;
+    public TMP_Text nomdujoueur;
     [SerializeField] Transform roomListContent, playerListContent;
-    [SerializeField] GameObject PlayerListItemPrefab, startGameButton, CanvasTitleScreen, roomListItemPrefab;
+    [SerializeField] GameObject PlayerListItemPrefab, startGameButton, roomListItemPrefab;
     #endregion
     void Awake() => Instance = this;
     void Start() => PhotonNetwork.ConnectUsingSettings();
@@ -22,13 +24,16 @@ public class Launcher : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby();
         PhotonNetwork.AutomaticallySyncScene = true;
     }
-    public override void OnJoinedLobby() => MenuManager.Instance.OpenMenu("custom room");
-    public void CustomValide()
+    public override void OnJoinedLobby()
     {
         MenuManager.Instance.OpenMenu("title");
-        CanvasTitleScreen.SetActive(true);
-        PhotonNetwork.NickName = playerNameInputField.text;
         nomdujoueur.text = PhotonNetwork.NickName;
+
+    }
+    public void CustomValide()
+    {
+        SceneManager.LoadScene(2, LoadSceneMode.Additive);
+        MenuManager.Instance.OpenMenu("custom");
     }
     public void AppQuit() => Application.Quit();
     public void CreateRoom()

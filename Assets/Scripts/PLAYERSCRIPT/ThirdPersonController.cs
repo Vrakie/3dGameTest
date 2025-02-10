@@ -113,7 +113,7 @@ namespace StarterAssets
         public GameObject menuPause;
         private bool isMenuPauseActif;
 
-        public bool cursorLocked = true;
+        public bool cursorLocked;
 
 
         private bool _hasAnimator;
@@ -148,7 +148,6 @@ namespace StarterAssets
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
 
-            cursorLocked = true;
 
             SetCursorState(cursorLocked);
 

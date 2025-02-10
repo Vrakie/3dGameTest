@@ -7,6 +7,17 @@ public class RoomManager : MonoBehaviourPunCallbacks
     #region VARIABLE
     public static RoomManager Instance;
     #endregion
+
+    private void Start()
+    {
+        int level;
+        string playerName;
+        SaveManager.LoadGame(out playerName,out level);
+
+        Debug.Log($"Bienvenue {playerName} ! Tu es au niveau {level}");
+
+        PhotonNetwork.NickName = playerName;
+    }
     void Awake()
 	{
 		if(Instance)
