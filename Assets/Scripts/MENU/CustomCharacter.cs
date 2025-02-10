@@ -6,30 +6,28 @@ using TMPro;
 
 public class CustomCharacter : MonoBehaviourPunCallbacks
 {
+    #region VARIABLE
     public List<DataCustomCharacter> list = new List<DataCustomCharacter>();
     [SerializeField] private TMP_InputField nomdujoueur;
     [SerializeField] private Launcher launcher;
     private new PhotonView photonView;
+    #endregion
 
     private void Start()
     {
-        if (photonView == null)
-            photonView = GetComponentInParent<PhotonView>();
-
-        if (photonView.IsMine)
-        {
+        if (SceneManager.GetActiveScene().name != "CustomPlayer")
+            photonView = GetComponent<PhotonView>();
+        else if (SceneManager.GetActiveScene().name == "CustomPlayer")
             SaveManager.LoadActiveGameObjects(this);
-        }
-
-        LoadActiveGameObjects();
+        if (photonView == null)
+            return;
+        if (photonView.IsMine)
+            LoadActiveGameObjects();
     }
-
     public void SetNextElement(int i) => NextElement(i);
     public void SetPreviousElement(int i) => PreviousElement(i);
-
     private void NextElement(int index) => ActivateElement(list[index], GetNextIndex(list[index], 1));
     private void PreviousElement(int index) => ActivateElement(list[index], GetNextIndex(list[index], -1));
-
     private int GetNextIndex(DataCustomCharacter data, int offset)
     {
         data.currentIndex = (data.currentIndex + offset + data.dataList.Count) % data.dataList.Count;
@@ -48,40 +46,55 @@ public class CustomCharacter : MonoBehaviourPunCallbacks
     public void Randomclick()
     {
         foreach (var data in list)
-        {
             if (data.dataList.Count > 0)
             {
                 int randomIndex = Random.Range(0, data.dataList.Count);
                 ActivateElement(data, randomIndex);
             }
-        }
     }
 
     public void click()
     {
         PhotonNetwork.NickName = nomdujoueur.text;
         SaveManager.SaveGame(nomdujoueur.text, 1);
-
         List<string> activeObjectsNames = new List<string>();
-
         foreach (DataCustomCharacter obj in list)
-        {
             foreach (GameObject go1 in obj.dataList)
-            {
                 if (go1.activeSelf)
-                {
                     activeObjectsNames.Add(go1.name);
+        string savedData = string.Join(";", activeObjectsNames);
+        PlayerPrefs.SetString("ActiveGameObjects", savedData);
+        PlayerPrefs.Save();
+        SceneManager.UnloadSceneAsync(2);
+        MenuManager.Instance.OpenMenu("title");
+    }
+
+    public void LoadActiveGameObjectsInCustom()
+    {
+        if (PlayerPrefs.HasKey("ActiveGameObjects"))
+        {
+            string savedData = PlayerPrefs.GetString("ActiveGameObjects");
+            string[] activeObjectNames = savedData.Split(';'); // Récupère la liste
+
+            Debug.Log($" Chargement des objets actifs : {savedData}");
+
+            // Désactive tous les objets, puis réactive uniquement ceux enregistrés
+            foreach (DataCustomCharacter obj in list)
+            {
+                foreach (GameObject go1 in obj.dataList)
+                {
+                    go1.SetActive(false); // Désactiver tous les objets
+                    if (System.Array.Exists(activeObjectNames, name => name == go1.name))
+                    {
+                        go1.SetActive(true); // Réactiver si le nom est dans la liste
+                    }
                 }
             }
         }
-
-        string savedData = string.Join(";", activeObjectsNames);
-
-        PlayerPrefs.SetString("ActiveGameObjects", savedData);
-        PlayerPrefs.Save();
-
-        SceneManager.UnloadSceneAsync(2);
-        MenuManager.Instance.OpenMenu("title");
+        else
+        {
+            Debug.LogWarning(" Aucune sauvegarde d'objets actifs trouvée !");
+        }
     }
 
     public void LoadActiveGameObjects()
@@ -90,30 +103,42 @@ public class CustomCharacter : MonoBehaviourPunCallbacks
         {
             string savedData = PlayerPrefs.GetString("ActiveGameObjects");
             string[] activeObjectNames = savedData.Split(';');
-            List<GameObject> activeObjects = new List<GameObject>();
+
+            List<string> activeObjects = new List<string>();
 
             foreach (DataCustomCharacter obj in list)
             {
-                foreach (GameObject go1 in obj.dataList)
+                foreach (GameObject go in obj.dataList)
                 {
-                    go1.SetActive(false); // Désactive tous les objets au départ
-                    if (System.Array.Exists(activeObjectNames, name => name == go1.name))
+                    go.SetActive(false);
+                    if (System.Array.Exists(activeObjectNames, name => name == go.name))
                     {
-                        activeObjects.Add(go1); // Ajoute les objets actifs à la liste
+                        go.SetActive(true);
+                        activeObjects.Add(go.name);
                     }
                 }
             }
-            foreach (GameObject go in activeObjects)
-            {
-                photonView.RPC("Rpc_InitializePlayerSkins", RpcTarget.OthersBuffered, go, true);
-            }
+            if (SceneManager.GetActiveScene().name != "CustomPlayer")
+                photonView.RPC("Rpc_InitializePlayerSkins", RpcTarget.OthersBuffered, activeObjects.ToArray());
         }
     }
     [PunRPC]
-    public void Rpc_InitializePlayerSkins(GameObject go, bool isActive = true)
+    public void Rpc_InitializePlayerSkins(string[] activeObjectNames)
     {
-        // Active ou désactive les objets reçus dans le tableau
-            go.SetActive(isActive);
+        foreach (string objectName in activeObjectNames)
+        {
+            foreach (DataCustomCharacter obj in list)
+            {
+                foreach (GameObject go in obj.dataList)
+                {
+                    if (go.name == objectName)
+                    {
+                        go.SetActive(true);
+                        Debug.Log($"Objet activé via RPC : {go.name}");
+                    }
+                }
+            }
+        }
     }
 }
 

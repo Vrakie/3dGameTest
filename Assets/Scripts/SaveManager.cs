@@ -7,10 +7,7 @@ public class SaveManager : MonoBehaviour
     {
         PlayerPrefs.SetString("PlayerName", playerName);
         PlayerPrefs.SetInt("Level", level);
-
-        // Sauvegarde des GameObjects actifs
         SaveActiveGameObjects();
-
         PlayerPrefs.Save();
         Debug.Log("Sauvegarde réussie !");
     }
@@ -19,42 +16,27 @@ public class SaveManager : MonoBehaviour
     {
         playerName = PlayerPrefs.GetString("PlayerName", "Guest");
         level = PlayerPrefs.GetInt("Level", 1);
-
-        Debug.Log($"Chargement réussi : Nom {playerName}, Niveau {level}");
     }
 
-    public static void ResetGame()
-    {
-        PlayerPrefs.DeleteAll();
-        Debug.Log("Sauvegarde réinitialisée !");
-    }
+    public static void ResetGame() => PlayerPrefs.DeleteAll();
 
     public static void SaveActiveGameObjects()
     {
         List<string> activeObjectsNames = new List<string>();
-
-        // Récupérer tous les objets CustomCharacter dans la scène
         CustomCharacter customCharacter = Object.FindFirstObjectByType<CustomCharacter>();
-
         if (customCharacter != null)
         {
             foreach (DataCustomCharacter obj in customCharacter.list)
             {
                 foreach (GameObject go in obj.dataList)
                 {
-                    if (go.activeSelf) // Vérifie si l'objet est actif
-                    {
-                        activeObjectsNames.Add(go.name); // Ajoute le nom du GameObject
-                    }
+                    if (go.activeSelf)
+                        activeObjectsNames.Add(go.name);
                 }
             }
         }
-
-        // Convertir la liste en une seule chaîne avec ";"
         string savedData = string.Join(";", activeObjectsNames);
         PlayerPrefs.SetString("ActiveGameObjects", savedData);
-
-        Debug.Log($"Objets actifs sauvegardés : {savedData}");
     }
 
     public static void LoadActiveGameObjects(CustomCharacter customCharacter)
@@ -62,25 +44,16 @@ public class SaveManager : MonoBehaviour
         if (PlayerPrefs.HasKey("ActiveGameObjects"))
         {
             string savedData = PlayerPrefs.GetString("ActiveGameObjects");
-            string[] activeObjectNames = savedData.Split(';'); // Convertir en liste
-
-            Debug.Log($"Chargement des objets actifs : {savedData}");
-
+            string[] activeObjectNames = savedData.Split(';');
             foreach (DataCustomCharacter obj in customCharacter.list)
             {
                 foreach (GameObject go in obj.dataList)
                 {
-                    go.SetActive(false); // Désactiver tous les objets
+                    go.SetActive(false);
                     if (System.Array.Exists(activeObjectNames, name => name == go.name))
-                    {
-                        go.SetActive(true); // Réactiver les objets sauvegardés
-                    }
+                        go.SetActive(true);
                 }
             }
-        }
-        else
-        {
-            Debug.LogWarning("Aucune sauvegarde d'objets actifs trouvée !");
         }
     }
 }
