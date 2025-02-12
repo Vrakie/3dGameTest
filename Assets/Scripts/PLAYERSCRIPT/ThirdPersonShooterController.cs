@@ -8,12 +8,12 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
+    #region VARIABLE
     [SerializeField] private CinemachineVirtualCamera aimVirtualCamera;
     [SerializeField] private float normalSensitivity, aimSensitivity;
     [SerializeField] private Transform firePoint;
     [SerializeField] private Slider fireballChargeSlider;
     [SerializeField] private Image sliderFillImage;
-
     private StarterAssetsInputs starterAssetsInputs;
     private ThirdPersonController thirdPersonController;
     private Animator animator;
@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     private float fireballHoldTime;
     private const float holdDuration = 1f;
     private int sort = 1;
-
+    #endregion
     private void Awake()
     {
         starterAssetsInputs = GetComponent<StarterAssetsInputs>();
@@ -44,23 +44,10 @@ public class PlayerController : MonoBehaviour
     {
         HandleAiming();
         HandleWeaponFire();
-
-        // Make the flamethrower follow the aim
-        if (currentFlamethower != null)
-        {
-            Vector3 lookDirection = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
-            lookDirection.y = 0f; // To keep the flamethrower level
-            currentFlamethower.transform.forward = lookDirection.normalized;
-        }
     }
 
     private void HandleAiming()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            sort = 1;
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-            sort = 2;
-
         if (Input.GetMouseButtonUp(0) && currentFlamethower != null)
             Destroy(currentFlamethower);
 
@@ -144,35 +131,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    [PunRPC]
-    private void StartHoldingFireball()
-    {
-        currentFireball = PhotonNetwork.Instantiate("PhotonPrefabs/BouleDeFeu", firePoint.position, Quaternion.identity);
-        fireballParentConstraint = currentFireball.GetComponent<ParentConstraint>();
 
-        if (fireballParentConstraint != null)
-        {
-            ConstraintSource source = new ConstraintSource { sourceTransform = firePoint, weight = 1f };
-            fireballParentConstraint.AddSource(source);
-            fireballParentConstraint.constraintActive = true;
-        }
-        currentFireball.GetComponent<Rigidbody>().isKinematic = true;
-    }
-
-    [PunRPC]
-    private void ReleaseFireball()
-    {
-        if (currentFireball != null && fireballParentConstraint != null)
-        {
-            fireballParentConstraint.constraintActive = false;
-            Rigidbody rb = currentFireball.GetComponent<Rigidbody>();
-            rb.isKinematic = false;
-            if (Camera.main != null)
-                rb.linearVelocity = Camera.main.ScreenPointToRay(Input.mousePosition).direction * 40f;
-
-            currentFireball = null;
-        }
-    }
 
     private void DestroyFireball()
     {
@@ -214,5 +173,35 @@ public class PlayerController : MonoBehaviour
     {
         direction.y = 0f;
         transform.forward = Vector3.Lerp(transform.forward, direction.normalized, Time.deltaTime * 20f);
+    }
+
+    [PunRPC]
+    private void StartHoldingFireball()
+    {
+        currentFireball = PhotonNetwork.Instantiate("PhotonPrefabs/BouleDeFeu", firePoint.position, Quaternion.identity);
+        fireballParentConstraint = currentFireball.GetComponent<ParentConstraint>();
+
+        if (fireballParentConstraint != null)
+        {
+            ConstraintSource source = new ConstraintSource { sourceTransform = firePoint, weight = 1f };
+            fireballParentConstraint.AddSource(source);
+            fireballParentConstraint.constraintActive = true;
+        }
+        currentFireball.GetComponent<Rigidbody>().isKinematic = true;
+    }
+
+    [PunRPC]
+    private void ReleaseFireball()
+    {
+        if (currentFireball != null && fireballParentConstraint != null)
+        {
+            fireballParentConstraint.constraintActive = false;
+            Rigidbody rb = currentFireball.GetComponent<Rigidbody>();
+            rb.isKinematic = false;
+            if (Camera.main != null)
+                rb.linearVelocity = Camera.main.ScreenPointToRay(Input.mousePosition).direction * 40f;
+
+            currentFireball = null;
+        }
     }
 }
